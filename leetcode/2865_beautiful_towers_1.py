@@ -1,6 +1,6 @@
 from typing import List
 
-class BruteForce:
+class BruteForceSolution:
     def maximumSumOfHeights(self, heights: List[int]) -> int:
         # Goal: form mountain-shaped towers, where tower heights are non-decreasing, reaching a maximum, and then non-increasing
         # Return maximum possible sum of heights, or essentially remove as few bricks as possible
@@ -38,7 +38,7 @@ class BruteForce:
         
         return bricks_removed
 
-class DynamicProgramming:
+class DynamicProgrammingSolution:
     def maximumSumOfHeights(self, heights: List[int]) -> int:
         # Attempt to cut repeated work of recalculating left/right partitions after a new peak
         # Only recalculate the portions that were previously flattened -> this means tracking the original potentials/heights for those indices
