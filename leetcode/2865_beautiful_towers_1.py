@@ -84,5 +84,5 @@ class DynamicProgrammingSolution:
 
     
 if __name__ == '__main__':
-    s1 = DynamicProgramming()
+    s1 = DynamicProgrammingSolution()
     print(s1.maximumSumOfHeights([3,2,5,5,2,3]))
