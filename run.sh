@@ -2,12 +2,12 @@
 set -euo pipefail
 
 [[ $# -ge 2 ]] || {
-  echo "Usage: $0 <data_structures|algorithms> <file_name_without_ext> [program args...]" >&2
+  echo "Usage: $0 <data_structures|algorithms|leetcode> <file_name_without_ext> [program args...]" >&2
   exit 1
 }
 
 project="$1"; name="$2"; shift 2
-case "$project" in data_structures|algorithms) ;; *) echo "Unknown project: $project" >&2; exit 1 ;; esac
+case "$project" in data_structures|algorithms|leetcode) ;; *) echo "Unknown project: $project" >&2; exit 1 ;; esac
 
 if [[ -x "/opt/homebrew/opt/llvm/bin/clang++" ]]; then
     export CC="/opt/homebrew/opt/llvm/bin/clang"

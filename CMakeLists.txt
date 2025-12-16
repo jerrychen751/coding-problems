@@ -6,3 +6,5 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_subdirectory(data_structures)
 add_subdirectory(algorithms)
+add_subdirectory(leetcode)
+
