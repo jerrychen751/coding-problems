@@ -9,8 +9,24 @@ set -euo pipefail
 project="$1"; name="$2"; shift 2
 case "$project" in data_structures|algorithms) ;; *) echo "Unknown project: $project" >&2; exit 1 ;; esac
 
+if [[ -x "/opt/homebrew/opt/llvm/bin/clang++" ]]; then
+    export CC="/opt/homebrew/opt/llvm/bin/clang"
+    export CXX="/opt/homebrew/opt/llvm/bin/clang++"
+    export LDFLAGS="-L/opt/homebrew/opt/llvm/lib/c++ -Wl,-rpath,/opt/homebrew/opt/llvm/lib/c++"
+    export CXXFLAGS="-stdlib=libc++ -I/opt/homebrew/opt/llvm/include/c++/v1"
+else
+    echo "Warning: Homebrew LLVM not found. Falling back to system compiler (C++23 features may fail)." >&2
+fi
+
 root_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 build_dir="$root_dir/build"
+
+if [[ -f "$build_dir/CMakeCache.txt" && -n "${CXX:-}" ]]; then
+    if ! grep -q "CMAKE_CXX_COMPILER:FILEPATH=$CXX" "$build_dir/CMakeCache.txt"; then
+        echo "Compiler changed to $CXX. Cleaning build directory..."
+        rm -rf "$build_dir"
+    fi
+fi
 
 cmake -S "$root_dir" -B "$build_dir"
 
