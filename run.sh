@@ -31,7 +31,7 @@ fi
 cmake -S "$root_dir" -B "$build_dir"
 
 target_name="${project}__${name//\//__}"
-cmake --build "$build_dir" --target "$target_name" --parallel || cmake --build "$build_dir" --parallel
+cmake --build "$build_dir" --target "$target_name" --parallel
 
 exe_path="$root_dir/$project/outputs/$(basename -- "$name")"
 [[ -x "$exe_path" ]] || { echo "Executable not found: $exe_path" >&2; exit 1; }
