@@ -1,5 +1,6 @@
 .DS_Store
 reference/
+.clangd
 
 # C++ build artifacts
 cpp/build/
