@@ -4,7 +4,7 @@
 
 class Solution {
 public:
-    bool canPartition(std::vector<int> nums) {
+    bool canPartition(std::vector<int>& nums) {
         int total = std::accumulate(nums.begin(), nums.end(), 0);
         if (total % 2 == 1) {
             return false;
