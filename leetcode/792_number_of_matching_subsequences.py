@@ -24,7 +24,6 @@ class Solution:
         res = 0
         for word in words:
             curr_idx = -1 # idx we are at in s to find the last used char
-            matches = True
             for char in word:
                 # s doesn't even contain letter, so we exit immediately
                 if char not in letters:
