@@ -1,7 +1,7 @@
 from typing import List
 
 
-class Solution:
+class Solution1:
     def trap(self, height: List[int]) -> int:
         # Array of heights, representing elevation map
         # 2D, each height is a solid bar of height[i]
@@ -32,5 +32,34 @@ class Solution:
             constraint = min(left_effective[i], right_effective[i])
             if height[i] < constraint:
                 total_water += constraint - height[i]
+        
+        return total_water
+
+
+class Solution2:
+    def trap(self, height: List[int]) -> int:
+        # Space efficient solution:
+        # Two pointers
+        # Advance only the shorter of the two pointers
+        # That way its effective height calculation is not affected by what we haven't seen
+        # Track i, j at left and right ends of height array
+        # We are guaranteed that when we evaluate either height[i] or height[j], the effective height on somewhere we haven't seen yet
+        # is not the constraint, so it doesn't matter if we underestimate it
+        i, j = 0, len(height) - 1
+        left_effective = height[0] # largest height we've seen moving start..i-1
+        right_effective = height[-1] # largest height we've seen from j+1..end
+        total_water = 0
+        while i <= j:
+            constraint = min(left_effective, right_effective)
+            if height[i] <= height[j]:
+                if height[i] < constraint:
+                    total_water += constraint - height[i]
+                i += 1
+                left_effective = max(left_effective, height[i]) if i < len(height) else left_effective
+            else:
+                if height[j] < constraint:
+                    total_water += constraint - height[j]
+                j -= 1
+                right_effective = max(right_effective, height[j]) if j >= 0 else right_effective
         
         return total_water
