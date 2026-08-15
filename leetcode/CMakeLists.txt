@@ -14,6 +14,11 @@ get_filename_component(DIR_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}" NAME)
 file(GLOB SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 
 foreach(SOURCE_FILE IN LISTS SOURCES)
+    file(READ "${SOURCE_FILE}" SOURCE_CONTENT)
+    if(NOT SOURCE_CONTENT MATCHES "int[ \t\r\n]+main[ \t\r\n]*\\(")
+        continue()
+    endif()
+
     get_filename_component(EXECUTABLE_BASENAME "${SOURCE_FILE}" NAME_WE)
     set(TARGET_NAME "${DIR_PREFIX}__${EXECUTABLE_BASENAME}")
 
