@@ -44,11 +44,13 @@ Follow-up: can add_session and remove_session each run in O(1) time?
 class ServerManager:
     def __init__(self, servers: list[str]) -> None:
         self.session_to_server = {} # session id -> server id
+        self.server_to_sessions: dict[str, set[str]] = {} # server id -> session ids
 
         self.server_loads: dict[int, set[str]] = {} # maps int (session ct) to set of server ids
         self.server_loads[0] = set()
         for server in servers:
             self.server_loads[0].add(server)
+            self.server_to_sessions[server] = set()
 
 
     def add_session(self, session_id) -> None:
@@ -75,6 +77,7 @@ class ServerManager:
 
         # Maintain session to server mapping
         self.session_to_server[session_id] = server_id
+        self.server_to_sessions[server_id].add(session_id)
 
     def remove_session(self, session_id: str) -> None:
         if session_id not in self.session_to_server:
@@ -85,7 +88,7 @@ class ServerManager:
         server_id = self.session_to_server[session_id]
         server_bucket = 0
         for bucket in self.server_loads.keys():
-            if session_id in self.server_loads[bucket]:
+            if server_id in self.server_loads[bucket]:
                 server_bucket = bucket
                 self.server_loads[bucket].remove(server_id)
                 break
@@ -112,7 +115,17 @@ class ServerManager:
             self.server_loads[middle_bucket].add(larger_server)
             self.server_loads[middle_bucket].add(smaller_server)
 
+            # Move a session from larger server to smaller server so the real counts match the buckets
+            moved_session = self.server_to_sessions[larger_server].pop()
+            self.server_to_sessions[smaller_server].add(moved_session)
+            self.session_to_server[moved_session] = smaller_server
+
+        # Bucket the server left may be empty now; delete only after the 3 key check, which needs it as the center bucket
+        if len(self.server_loads[server_bucket]) == 0:
+            del self.server_loads[server_bucket]
+
         del self.session_to_server[session_id]
+        self.server_to_sessions[server_id].remove(session_id)
 
     def get_sessions(self):
         return self.session_to_server
