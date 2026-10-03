@@ -15,35 +15,22 @@ class Solution:
         if depth == 1:
             new_root = TreeNode(val, root)
             return new_root
+        if root is None:
+            return None
 
         curr_depth = 1 # depth of current level we're processing
         queue = deque([root])
 
-        while queue:
+        for _ in range(depth - 2):
             for _ in range(len(queue)):
-                node = queue.popleft()
-                if node is None:
-                    continue
+                curr = queue.popleft()
+                if curr.left is not None:
+                    queue.append(curr.left)
+                if curr.right is not None:
+                    queue.append(curr.right)
 
-                if curr_depth == depth - 1:
-                    child = TreeNode(val, node.left, None)
-                    old_child = node.left
-                    node.left = child
-                    queue.append(old_child)
-                else:
-                    queue.append(node.left)
-
-                if curr_depth == depth - 1:
-                    child = TreeNode(val, None, node.right)
-                    old_child = node.right
-                    node.right = child
-                    queue.append(old_child)
-                else:
-                    child = node.right
-                    queue.append(node.right)
-
-            if curr_depth == depth - 1:
-                break
-            curr_depth += 1
+        for node in queue:
+            node.left = TreeNode(val, left=node.left)
+            node.right = TreeNode(val, right=node.right)
 
         return root
