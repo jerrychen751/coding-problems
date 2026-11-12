@@ -3,7 +3,7 @@ class Solution:
         n = len(prices)
         k = 3 # 0=do nothing, 1=buy, 2=sell
 
-        # dp[i][j] = max profix achievable with prices[i:] given action j on day i
+        # dp[i][j] = max profit through day i given action j on that day, counting a buy's cost when the stock is sold
         dp = [[0 for _ in range(k)] for _ in range(n)]
         best_profit_after_buying = dp[0][1] - prices[0] # max (dp[j][1] - prices[j]) for j in 0..i-1
         for i in range(1, n):
