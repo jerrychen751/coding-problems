@@ -1,0 +1,11 @@
+{
+  "name": "expense-manager",
+  "version": "1.0.0",
+  "description": "Expense Manager System - JavaScript Starter",
+  "main": "expenses/service.js",
+  "scripts": {
+    "start": "node tests/test_expense_manager.js",
+    "test": "node tests/test_expense_manager.js"
+  }
+}
+
