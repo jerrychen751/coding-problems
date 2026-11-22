@@ -1,0 +1,7 @@
+.idea/
+
+.vscode/
+
+solutions/c++/.idea/
+
+__pycache__/
